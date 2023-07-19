@@ -1,0 +1,11 @@
+---
+applications:
+- name: fluentbit-drain
+  memory: 256M
+  buildpacks:
+  - https://github.com/cloudfoundry/apt-buildpack
+  - binary_buildpack
+  command: ./start.sh
+  health-check-type: process
+  services:
+  - newrelic-creds  
