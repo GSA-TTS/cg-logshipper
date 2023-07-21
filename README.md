@@ -15,15 +15,17 @@ To accomplish this for systems hosted on cloud.gov, the code in this repository 
 
 1. Create a user-provided service with your New Relic license key
     ```sh
-    cf create-user-provided-service newrelic-creds -p '{"NEW_RELIC_LICENSE_KEY":"[your key]"}'
+    cf create-user-provided-service newrelic-creds -p '{"NEW_RELIC_LICENSE_KEY":"[your key]", "NEW_RELIC_LOGS_ENDPOINT": "[your endpoint]"}'
     ```
+    NB: Use the correct NEW_RELIC_LOGS_ENDPOINT for your account. Refer to https://docs.newrelic.com/docs/logs/log-api/introduction-log-api/#endpoint
+
 2. Push the application
     ```sh
     cf push
     ```
 3. Check the logs to see if there were any problems
     ```sh
-    cf logs fluentbit-drain --recent 
+    cf logs fluentbit-drain --recent
     ```
 
 ## Status
@@ -34,7 +36,7 @@ To accomplish this for systems hosted on cloud.gov, the code in this repository 
 
 ### TODO
 
-- Test with a legit NR license key, and see logs appearing at the far side
+- Test with a legit NR license key, and see logs appearing at the far side (half done)
 - Configure the app to recognize a bound S3 bucket service in VCAP_SERVICES, and ship logs there as well
 - Set the INPUT clause to be what it should be for drained logs, following [this example for fluentd](https://docs.cloudfoundry.org/devguide/services/fluentd.html#config)
 - Port over all the [`datagov-logstack`](https://github.com/GSA/datagov-logstack) utility scripts for registering drains on apps/spaces
