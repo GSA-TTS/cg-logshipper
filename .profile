@@ -6,3 +6,6 @@
 
 export NEW_RELIC_LICENSE_KEY="$(echo "$VCAP_SERVICES" | jq --raw-output --arg service_name "newrelic-creds" ".[][] | select(.name == \$service_name) | .credentials.NEW_RELIC_LICENSE_KEY")"
 export NEW_RELIC_LOGS_ENDPOINT="$(echo "$VCAP_SERVICES" | jq --raw-output --arg service_name "newrelic-creds" ".[][] | select(.name == \$service_name) | .credentials.NEW_RELIC_LOGS_ENDPOINT")"
+
+# fluent-bit doesn't support https: proxy URL. (Why?) This doesn't actually work. FIXME
+export HTTP_PROXY=`echo $PROXYROUTE | sed -e 's/https:/http:/'`

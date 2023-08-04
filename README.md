@@ -28,19 +28,23 @@ To accomplish this for systems hosted on cloud.gov, the code in this repository 
     cf logs fluentbit-drain --recent
     ```
 
+## Finding your logs in New Relic
+
+Start by looking in "Logs -> All Logs." If you already have other logs feeding New Relic, you can filter by `plugin.type:"Fluent Bit"`. The default fluentbit.conf includes a "dummy" input that produces a single message. 
+
 ## Status
 
 - Can run `cf push` and see fluentbit running with the supplied configuration
 - No INPUT specified; we're just logging a dummy entry
-- We haven't tried it with a legit NR license key yet, so we haven't seen logs appearing at the far side
+- Test with a legit NR license key, and see logs appearing at the far side. (Single "dummy" message.) 
 
 ### TODO
 
-- Test with a legit NR license key, and see logs appearing at the far side (half done)
 - Configure the app to recognize a bound S3 bucket service in VCAP_SERVICES, and ship logs there as well
 - Set the INPUT clause to be what it should be for drained logs, following [this example for fluentd](https://docs.cloudfoundry.org/devguide/services/fluentd.html#config)
 - Port over all the [`datagov-logstack`](https://github.com/GSA/datagov-logstack) utility scripts for registering drains on apps/spaces
-- Look for and [use `https_proxy` for egress connections](https://docs.fluentbit.io/manual/administration/http-proxy)
+- Configure tls on the INPUT? 
+- Look for and [use `https_proxy` for egress connections](https://docs.fluentbit.io/manual/administration/http-proxy). Problem here: fluent-bit supports http_proxy/HTTP_PROXY but does not support the https protocol. See  [Note: "currently only HTTP is supported."](https://github.com/fluent/fluent-bit/blob/5686334b56ee9d92f0654b0a621113943b175b94/src/flb_utils.c#L1123)
 - Add tests?
 
 ## Contributing
