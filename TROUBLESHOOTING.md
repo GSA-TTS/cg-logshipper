@@ -1,11 +1,16 @@
-
 # Troubleshooting
 
 ## New Relic (nrlogs)
 
+### TODO: replace with "newrelic" examples
+
 These examples use the default "dummy" input and the "nrlogs" output in fluentbit.conf, with  `log_level info`.
 
 Follow the instructions in README.md to push the app and display the logs.
+
+You can get the full set of options for the nrlogs plugin by running this command:
+
+  `/home/vcap/deps/0/apt/opt/fluent-bit/bin/fluent-bit -o nrlogs -h`
 
 ### Success
 A successful startup for output to New Relic will show messages like this:
