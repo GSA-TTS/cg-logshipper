@@ -3,9 +3,8 @@
 KEYS_TO_PARSE = {"tags", "gauge"}
 
 -- Splits a string of foo="bar" pairs and makes parsable json out of it. 
-function parse_tags_with_eq_pairs(tag, timestamp, record)
+function parse_keys_with_eq_pairs(tag, timestamp, record)
     for k, v in pairs(KEYS_TO_PARSE) do
-
         if (record[v] ~= nil) then 
             record[v] = eq_pairs_to_json_string(record[v])
 	end
