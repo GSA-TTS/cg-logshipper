@@ -37,11 +37,10 @@ To accomplish this for systems hosted on cloud.gov, the code in this repository 
 
 ### TODO
 
-- Improve the parsing of logs, to send appropriately structured data forward. 
+- Restrict incoming traffic (by credentials if possible). 
+- Futher improve the parsing of logs -- handle or include examples for nginx, apache log messages
 - Configure the app to recognize a bound S3 bucket service in VCAP_SERVICES, and ship logs there as well
 - Port over all the [`datagov-logstack`](https://github.com/GSA/datagov-logstack) utility scripts for registering drains on apps/spaces
-- Restrict incoming traffic (by credentials if possible). 
-
 - Add tests?
 
 ## Contributing
