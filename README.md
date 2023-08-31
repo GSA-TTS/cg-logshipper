@@ -31,16 +31,18 @@ To accomplish this for systems hosted on cloud.gov, the code in this repository 
 ## Status
 
 - Can run `cf push` and see fluentbit running with the supplied configuration
-- No INPUT specified; we're just logging a dummy entry
-- We haven't tried it with a legit NR license key yet, so we haven't seen logs appearing at the far side
+- We have tested with a legit NR license key and seen logs appearing in NR.
+- Input configured to accept logs from a cf log-drain service.
+- Look for and use `HTTPS_PROXY` for egress connections (New Relic's plugin provides this) 
 
 ### TODO
 
-- Test with a legit NR license key, and see logs appearing at the far side (half done)
+- Add a web server. We're currently accepting HTTP requests but not sending a response, which is rude and will probably lead to excessive open connections. Web server needs to listen on ${PORT}, pipe data to fluentbit, and send a response (not necessarily in that order). 
+  - Restrict incoming traffic by credentials (basic auth)
+  - Restrict to cloud.gov egress ranges (52.222.122.97/32, 52.222.123.172/32)? 
+- Futher improve the parsing of logs -- handle or include examples for nginx, apache log messages
 - Configure the app to recognize a bound S3 bucket service in VCAP_SERVICES, and ship logs there as well
-- Set the INPUT clause to be what it should be for drained logs, following [this example for fluentd](https://docs.cloudfoundry.org/devguide/services/fluentd.html#config)
 - Port over all the [`datagov-logstack`](https://github.com/GSA/datagov-logstack) utility scripts for registering drains on apps/spaces
-- Look for and [use `https_proxy` for egress connections](https://docs.fluentbit.io/manual/administration/http-proxy)
 - Add tests?
 
 ## Contributing
