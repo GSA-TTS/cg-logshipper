@@ -6,7 +6,8 @@ applications:
   - https://github.com/cloudfoundry/apt-buildpack
   - nginx_buildpack
   services:
-  - newrelic-creds  
+  - newrelic-creds
+  - cg-logshipper-creds
   sidecars:
     - name: fluentbit
       process_types: [ 'web' ]
