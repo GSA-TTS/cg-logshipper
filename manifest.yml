@@ -8,6 +8,7 @@ applications:
   services:
   - newrelic-creds
   - cg-logshipper-creds
+  - log-storage
   sidecars:
     - name: fluentbit
       process_types: [ 'web' ]
