@@ -4,8 +4,13 @@ applications:
   memory: 256M
   buildpacks:
   - https://github.com/cloudfoundry/apt-buildpack
-  - binary_buildpack
-  command: ./start.sh
-  health-check-type: process
+  - nginx_buildpack
   services:
-  - newrelic-creds  
+  - newrelic-creds
+  - cg-logshipper-creds
+  - log-storage
+  sidecars:
+    - name: fluentbit
+      process_types: [ 'web' ]
+      command: /home/vcap/deps/0/apt/opt/fluent-bit/bin/fluent-bit -c fluentbit.conf
+    
