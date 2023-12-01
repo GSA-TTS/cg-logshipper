@@ -85,7 +85,7 @@ Logs should begin to flow after a short delay. You will be able to see traffic h
 You can supplement the default configuration by overwriting the files in the project_conf directory. This directory contains "stub" files that are already referred to from fluentbit.conf. For example:
 
    ```sh
-   git clone --depth 1  https://github.com/GSA-TTS/cg-logshipper
+   git clone --depth 1 git@github.com:GSA-TTS/cg-logshipper.git
    cp parsers.conf fluentbit.conf cg-logshipper/project_conf
    cd cg-logshipper
    cf push
