@@ -51,7 +51,11 @@ All of the following steps take place in the same cf space where the logshipper 
     cf logs fluentbit-drain --recent
     ```
 
-7. If you are using an egress proxy, set the $HTTPS_PROXY variable. (TODO; current .profile assumes a $PROXYROUTE in the app's env)
+7. If you are using an egress proxy, set the PROXYROUTE variable and restage the app.
+    ```sh
+    cf set-env fluentbit-drain PROXYROUTE 'https://user:pass@myproxy.app.internal:61443'
+    cf restage fluentbit-drain
+    ```
 
 At this point you should have a running app, but nothing is sending logs to it.
 
@@ -76,6 +80,17 @@ The `drain-type=all` query parameter tells Cloud Foundry to send both logs and m
 
 Logs should begin to flow after a short delay. You will be able to see traffic hitting the fluent-bit app's web server. The logshipper uses New Relic's Logs API to transfer individual log entries as it processes them. For s3, it batches log entries into files that are transferred to the s3 bucket when they reach a certain size (default 50M) or when the upload timeout period (default 10 minutes) has passed.
 
+## Additional Configuration
+
+You can supplement the default configuration by overwriting the files in the project_conf directory. This directory contains "stub" files that are already referred to from fluentbit.conf. For example:
+
+   ```sh
+   git clone --depth 1  https://github.com/GSA-TTS/cg-logshipper
+   cp parsers.conf fluentbit.conf cg-logshipper/project_conf
+   cd cg-logshipper
+   cf push
+   ```
+
 ## Status
 
 - Can run `cf push` and see fluentbit running with the supplied configuration
@@ -83,7 +98,7 @@ Logs should begin to flow after a short delay. You will be able to see traffic h
 - Input configured to accept logs from a cf log-drain service.
 - Web server accepts HTTP request and proxies them to fluent-bit (using TCP).
   - Web server requires HTTP basic auth.
-- Look for and use `HTTPS_PROXY` for egress connections (New Relic's plugin provides this).
+- Looks for and uses PROXYROUTE environment var and uses it as HTTPS_PROXY for egress connections.
 
 ### TODO
 
@@ -91,6 +106,8 @@ Logs should begin to flow after a short delay. You will be able to see traffic h
 - Document parsing of logs, maybe add examples for parsing common formats.
 - Port over all the [`datagov-logstack`](https://github.com/GSA/datagov-logstack) utility scripts for registering drains on apps/spaces
 - Add tests?
+- Add a --branch argument to the example under *Additional Configuration*, once we have a tagged release.
+- Change the method of getting PROXYROUTE to a user-provided service, rather than cf env. 
 
 ## Contributing
 
