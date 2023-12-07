@@ -17,10 +17,7 @@ Note: Instructions currently assume you will ship to _both_ New Relic and S3. Be
 
 All of the following steps take place in the same cf space where the logshipper will reside.
 
-Commands in .profile look for specific tags. The names of the specific services can be unique, without impacting the `.profile`. The specific tags for the services are:
-- cg-logshipper-creds = `logshipper-creds`
-- log-storage = `logshipper-s3`
-- newrelic-creds = `newrelic`
+Commands in .profile look for a specific tag of `logshipper`. The names of the specific services can be unique, without impacting the `.profile`.
 
 1. Create a user-provided service "newrelic-creds" with your New Relic license key
     ```sh
