@@ -5,8 +5,8 @@
 # - extract S3 bucket params from a bound service in VCAP_SERVICES and set env vars
 # - Save user/password for HTTP auth to a file for nginx basic auth.
 
-export NEW_RELIC_LICENSE_KEY="$(echo "$VCAP_SERVICES" | jq --raw-output '."user-provided" | .[] | select(.tags[] | contains("newrelic")) | .credentials.NEW_RELIC_LICENSE_KEY')"
-export NEW_RELIC_LOGS_ENDPOINT="$(echo "$VCAP_SERVICES" | jq --raw-output '."user-provided" | .[] | select(.tags[] | contains("newrelic")) | .credentials.NEW_RELIC_LOGS_ENDPOINT')"
+export NEW_RELIC_LICENSE_KEY="$(echo "$VCAP_SERVICES" | jq --raw-output '."user-provided" | .[] | select(.tags[] | contains("newrelic-creds")) | .credentials.NEW_RELIC_LICENSE_KEY')"
+export NEW_RELIC_LOGS_ENDPOINT="$(echo "$VCAP_SERVICES" | jq --raw-output '."user-provided" | .[] | select(.tags[] | contains("newrelic-creds")) | .credentials.NEW_RELIC_LOGS_ENDPOINT')"
 
 export BUCKET_NAME="$(echo "$VCAP_SERVICES" | jq --raw-output '."s3" | .[] | select(.tags[] | contains("logshipper-s3")) | .credentials.bucket')"
 export AWS_DEFAULT_REGION="$(echo "$VCAP_SERVICES" | jq --raw-output '."s3" | .[] | select(.tags[] | contains("logshipper-s3")) | .credentials.region')"

@@ -19,7 +19,7 @@ All of the following steps take place in the same cf space where the logshipper 
 
 Commands in .profile look for a specific tag in relation to the service. The names of the specific services can be unique, without impacting the `.profile`.
 Current Supported Tags:
-- The "newrelic-creds" user provided service = `newrelic`
+- The "newrelic-creds" user provided service = `newrelic-creds`
 - The "log-storage" s3 bucket = `logshipper-s3`
 - The "cg-logshipper-creds" user provided service = `logshipper-creds`
 
