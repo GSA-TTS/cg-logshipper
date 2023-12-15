@@ -33,17 +33,20 @@ Let's start with what you should expect to see. Here are the logs from a success
    2023-12-14T17:13:11.52-0800 [CELL/0] OUT Container became healthy
 ```
 
-Note that we see a couple of lines of status from the `tcp` input and the `s3` output, but nothing from the `newrelic` output. 
+Note that we see a couple of lines of status from the `tcp` input and the `s3` output, but nothing from the `newrelic` output.
 
-## New Relic (newrelic) 
+## New Relic (newrelic)
 
-The `newrelic` plugin will log errors if it cannot connect to New Relic because of bad credentials. Note that you will get the same messages if you have provided good credentials, but have set the endpoint to the wrong New Relic API endpoint. 
+This log shipper uses a plugin named `newrelic`, which is provided by New Relic. This is *not* the same as the `nrlogs` plugin that Fluent Bit includes by default. You can find New Relic's documentation of their plugin at https://docs.newrelic.com/docs/logs/forward-logs/fluent-bit-plugin-log-forwarding/ .
 
-(TODO: produce this condition and note what it looks like.)
+The `newrelic` plugin will log errors if it cannot connect to New Relic because of bad credentials. Note that you will get the same messages if you have provided good credentials, but have set the endpoint to the wrong New Relic API endpoint.
 
+(**TODO**: produce this condition and note what it looks like.)
+
+### Finding the logs in New Relic's UI
 New Relic has *Logs* in two places in its UI. There is a global *Logs* section, which is where you should look first. The URL of this view will start with https://one.newrelic.com/logger (in fact, if you are logged in, that URL should take you there) and the heading will be something like _All logs_. There is another, very similar looking, logs view in the *APM & Services* section under each entity New Relic knows about.
 
-Each APM & Service instance, that New Relic classifies as a "service" will have its own individual logs that are available when navigating to a specific service. When navigating to the "Global Logs Inbox" as specified above, you will see all logs from all services. To filter on specific logs that are coming from `cg-logshipper` you can add a column of `newrelic.source`, or, run a query with the following: `newrelic.source:"api.logs"`. Logshipper will have a source of `newrelic.source:"api.logs"`, where application logs will have a source of `newrelic.source:"logs.APM"`.
+Each APM & Service instance that New Relic classifies as a "service" will have its own individual logs that are available when navigating to a specific service. When navigating to the "Global Logs Inbox" as specified above, you will see all logs from all services. To filter on specific logs that are coming from `cg-logshipper` you can add a column of `newrelic.source`, or, run a query with the following: `newrelic.source:"api.logs"`. Logshipper will have a source of `newrelic.source:"api.logs"`, where application logs will have a source of `newrelic.source:"logs.APM"`.
 Which helped highlight that New Relic was in fact, receiving logs from the `cg-logshipper` application, along with adding a column of `newrelic.source`. If you plan to have the logshipper deployed in multiple environments, it may also be beneficial to add a column of `tags.space_name` so that when all instances of logshipper, as well as application instances are putting logs into the inbox, it is easier to see which environments are, in fact, sending logs to new relic.
 
 ![image](https://github.com/GSA-TTS/cg-logshipper/assets/130377221/a832b1f9-02df-41c2-a0c4-8f3f9558f67e)
@@ -55,9 +58,9 @@ A useful configuration was the inclusion of a sample message, something like thi
     interval_sec 60
 
 
-By default, logs sent by the logshipper are not associated with a particular entity! 
+By default, logs sent by the logshipper are not associated with a particular entity!
 
-TODO: try adding an entity.guid as described in https://docs.newrelic.com/docs/new-relic-solutions/new-relic-one/core-concepts/what-entity-new-relic/#entity-synthesis and document that. 
+**TODO**: try adding an entity.guid as described in https://docs.newrelic.com/docs/new-relic-solutions/new-relic-one/core-concepts/what-entity-new-relic/#entity-synthesis and document that.
 
 ### Might it be the egress proxy?
 
@@ -67,4 +70,4 @@ Note that cg-logshipper expects the `$PROXYROUTE` environment variable, which it
 
 ## s3
 
-So far, we haven't run into any puzzles with this one, so this section is empty. 
+So far, we haven't run into any puzzles with this one, so this section is empty.
