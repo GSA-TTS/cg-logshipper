@@ -15,22 +15,28 @@ To accomplish this for systems hosted on cloud.gov, the code in this repository 
 
 Note: Instructions currently assume you will ship to _both_ New Relic and S3. Better configuration is TODO.
 
-All of the following steps take place in the same cf space where the logshipper will reside. Commands in .profile are looking for specific service names, so use the names suggested (or edit .profile).
+All of the following steps take place in the same cf space where the logshipper will reside.
+
+Commands in .profile look for a specific tag in relation to the service. The names of the specific services can be unique, without impacting the `.profile`.
+Current Supported Tags:
+- The "newrelic-creds" user provided service = `newrelic-creds`
+- The "log-storage" s3 bucket = `logshipper-s3`
+- The "cg-logshipper-creds" user provided service = `logshipper-creds`
 
 1. Create a user-provided service "newrelic-creds" with your New Relic license key
     ```sh
-    cf create-user-provided-service newrelic-creds -p '{"NEW_RELIC_LICENSE_KEY":"[your key]", "NEW_RELIC_LOGS_ENDPOINT": "[your endpoint]"}'
+    cf create-user-provided-service my-newrelic-credential-name -p '{"NEW_RELIC_LICENSE_KEY":"[your key]", "NEW_RELIC_LOGS_ENDPOINT": "[your endpoint]"}' -t "newrelic-creds"
     ```
     NB: Use the correct NEW_RELIC_LOGS_ENDPOINT for your account. Refer to https://docs.newrelic.com/docs/logs/log-api/introduction-log-api/#endpoint
 
 2. Create an s3 bucket "log-storage" to receive log files:
     ```sh
-    cf create-service s3 basic log-storage
+    cf create-service s3 basic my-s3-name -t "logshipper-s3"
     ```
 
 3. Create a user-provided service "cg-logshipper-creds" to provide HTTP basic auth creds. These will be provided to the logshipper by the service; you will also need to supply them to the log drain service(s) as part of the URL:
     ```sh
-    cf create-user-provided-service cg-logshipper-creds -p '{"HTTP_USER": "Some_username_you_provide", "HTTP_PASS": "Some_password"}'
+    cf create-user-provided-service my-logshipper-credential-name -p '{"HTTP_USER": "Some_username_you_provide", "HTTP_PASS": "Some_password"}' -t "logshipper-creds"
     ```
 
 4. Push the application
@@ -40,9 +46,9 @@ All of the following steps take place in the same cf space where the logshipper 
 
 5. Bind the services to the app (now that it exists) and restage it:
     ```sh
-    cf bind-service fluentbit-drain newrelic-creds
-    cf bind-service fluentbit-drain cg-logshipper-creds
-    cf bind-service fluentbit-drain log-storage
+    cf bind-service fluentbit-drain my-newrelic-credential-name
+    cf bind-service fluentbit-drain my-s3-name
+    cf bind-service fluentbit-drain my-logshipper-credential-name
     cf restage fluentbit-drain
     ```
 
@@ -69,13 +75,13 @@ The `drain-type=all` query parameter tells Cloud Foundry to send both logs and m
 
 1. Set up a log drain service:
     ```sh
-    cf create-user-provided-service log-drain-to-fluentbit -l 'https://Some_username_you_provide:Some_password@fluentbit-drain-some-random-words.app.cloud.gov/?drain-type=all'
+    cf create-user-provided-service my-logdrain-name -l 'https://${HTTP_USER}:${HTTP_PASS}@fluentbit-drain-some-random-words.app.cloud.gov/?drain-type=all'
     ```
 
 2. Bind the log drain service to the app(s):
     ```sh
-    cf bind-service hello-world-app log-drain-to-fluentbit
-    cf bind-service another-app log-drain-to-fluentbit
+    cf bind-service hello-world-app my-logdrain-name
+    cf bind-service another-app my-logdrain-name
     ```
 
 Logs should begin to flow after a short delay. You will be able to see traffic hitting the fluent-bit app's web server. The logshipper uses New Relic's Logs API to transfer individual log entries as it processes them. For s3, it batches log entries into files that are transferred to the s3 bucket when they reach a certain size (default 50M) or when the upload timeout period (default 10 minutes) has passed.
