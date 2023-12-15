@@ -25,18 +25,18 @@ Current Supported Tags:
 
 1. Create a user-provided service "newrelic-creds" with your New Relic license key
     ```sh
-    cf create-user-provided-service my-newrelic-credential-name -p '{"NEW_RELIC_LICENSE_KEY":"[your key]", "NEW_RELIC_LOGS_ENDPOINT": "[your endpoint]"}'
+    cf create-user-provided-service my-newrelic-credential-name -p '{"NEW_RELIC_LICENSE_KEY":"[your key]", "NEW_RELIC_LOGS_ENDPOINT": "[your endpoint]"}' -t "newrelic-creds"
     ```
     NB: Use the correct NEW_RELIC_LOGS_ENDPOINT for your account. Refer to https://docs.newrelic.com/docs/logs/log-api/introduction-log-api/#endpoint
 
 2. Create an s3 bucket "log-storage" to receive log files:
     ```sh
-    cf create-service s3 basic my-s3-name
+    cf create-service s3 basic my-s3-name -t "logshipper-s3"
     ```
 
 3. Create a user-provided service "cg-logshipper-creds" to provide HTTP basic auth creds. These will be provided to the logshipper by the service; you will also need to supply them to the log drain service(s) as part of the URL:
     ```sh
-    cf create-user-provided-service my-logshipper-credential-name -p '{"HTTP_USER": "Some_username_you_provide", "HTTP_PASS": "Some_password"}'
+    cf create-user-provided-service my-logshipper-credential-name -p '{"HTTP_USER": "Some_username_you_provide", "HTTP_PASS": "Some_password"}' -t "logshipper-creds"
     ```
 
 4. Push the application
