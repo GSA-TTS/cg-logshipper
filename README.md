@@ -93,7 +93,6 @@ Logs should begin to flow after a short delay. You will be able to see traffic h
 
 ### TODO
 
-- Maybe restrict incoming traffic to cloud.gov egress ranges (52.222.122.97/32, 52.222.123.172/32)?
 - Document parsing of logs, maybe add examples for parsing common formats.
 - Port over all the [`datagov-logstack`](https://github.com/GSA/datagov-logstack) utility scripts for registering drains on apps/spaces
 - Add tests?
