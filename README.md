@@ -60,7 +60,7 @@ Current Supported Tags:
 7. If you are using an egress proxy, set the PROXYROUTE variable and restage the app.
     ```sh
     cf set-env fluentbit-drain PROXYROUTE 'https://user:pass@myproxy.app.internal:61443'
-    cf restage fluentbit-drain
+    cf restart fluentbit-drain
     ```
 
 At this point you should have a running app, but nothing is sending logs to it.
