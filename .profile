@@ -20,6 +20,4 @@ echo "${HTTP_USER}:${HTTP_PASS_CRYPT}" > /home/vcap/app/http_creds
 chmod 600 /home/vcap/app/http_creds
 
 # Add HTTPS_PROXY (example):
-if [ -n "$PROXYROUTE" ]; then
-    export HTTPS_PROXY=$PROXYROUTE
-fi
+export HTTPS_PROXY=$PROXYROUTE
