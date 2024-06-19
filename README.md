@@ -108,11 +108,12 @@ You can supplement the default configuration by overwriting the files in the pro
 
 ### TODO
 
+- Turn on validateProxyCerts in New Relic output config and make the certs work
 - Document parsing of logs, maybe add examples for parsing common formats.
 - Port over all the [`datagov-logstack`](https://github.com/GSA/datagov-logstack) utility scripts for registering drains on apps/spaces
 - Add tests?
 - Add a --branch argument to the example under *Additional Configuration*, once we have a tagged release.
-- Change the method of getting PROXYROUTE to a user-provided service, rather than cf env. 
+
 
 ## Contributing
 
