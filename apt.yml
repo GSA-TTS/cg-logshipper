@@ -4,4 +4,4 @@ keys:
 repos:
 - deb https://packages.fluentbit.io/ubuntu/jammy jammy main
 packages:
-- fluent-bit=3.2.10
+- fluent-bit=5.0.9

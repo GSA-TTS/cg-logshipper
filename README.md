@@ -114,6 +114,11 @@ You can supplement the default configuration by overwriting the files in the pro
 - Add tests?
 - Add a --branch argument to the example under *Additional Configuration*, once we have a tagged release.
 
+## Upgrading
+
+Check the Fluent Bit [Upgrade notes](https://docs.fluentbit.io/manual/installation/upgrade-notes), especially if you've previously written custom configuration for this tool.
+
+Consult the `apt.yml` file for the version of fluent-bit that will be installed.
 
 ## Contributing
 
